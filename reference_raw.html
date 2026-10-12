@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComplyChef AI | Compliance Intelligence for UK Food Businesses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+:root{
+  --yellow:#FFC72C;--yellow-deep:#EDAE00;--yellow-pale:#FFF3D2;
+  --ink:#15181B;--ink-soft:#20252A;--ink-mid:#2B3138;
+  --paper:#FAF7EF;--paper-alt:#F2ECDA;--white:#FFFFFF;
+  --text-dark:#181B1D;--text-mid:#4A4F53;--text-muted:#7B8085;--text-inv:rgba(255,255,255,.68);
+  --green:#1C8A4E;--red:#C6432E;
+  --line:rgba(21,24,27,.13);--line-w:rgba(255,255,255,.14);
+  --font:'Inter',sans-serif;--display:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --max-w:1180px;--nav-h:68px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+body{font-family:var(--font);color:var(--text-dark);background:var(--paper);overflow-x:hidden;}
+img{display:block;max-width:100%;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--paper-alt);}::-webkit-scrollbar-thumb{background:var(--yellow-deep);}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(18px,4.5vw,60px);}
+a{color:inherit;text-decoration:none;}
+
+/* ===== NAV ===== */
+.navbar{position:fixed;top:0;left:0;width:100%;height:var(--nav-h);background:var(--ink);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,48px);border-bottom:1px solid rgba(255,255,255,.08);}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-mark{width:34px;height:34px;background:var(--yellow);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transform:rotate(-3deg);}
+.nav-mark i{color:var(--ink);font-size:15px;}
+.nav-word{font-family:var(--display);font-weight:700;font-size:18px;color:#fff;line-height:1;}
+.nav-word span{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:4px;font-weight:500;}
+.nav-links{display:flex;align-items:center;gap:26px;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.62);transition:color .2s;}
+.nav-links a:hover{color:var(--yellow);}
+.nav-cta{background:var(--yellow);color:var(--ink);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:10px 18px;border-radius:22px;white-space:nowrap;transition:filter .2s;}
+.nav-cta:hover{filter:brightness(1.08);}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{width:20px;height:2px;background:#fff;}
+.mobile-nav{display:none;position:fixed;top:var(--nav-h);left:0;width:100%;background:var(--ink);z-index:999;flex-direction:column;padding:10px 20px 24px;border-bottom:1px solid rgba(255,255,255,.08);}
+.mobile-nav.open{display:flex;}
+.mobile-nav a{padding:13px 2px;font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.75);border-bottom:1px solid rgba(255,255,255,.08);}
+
+/* ===== UTILITY ===== */
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--yellow-deep);margin-bottom:16px;}
+.eyebrow::before{content:'';width:20px;height:2px;background:var(--yellow-deep);}
+.eyebrow.on-dark{color:var(--yellow);}
+.eyebrow.on-dark::before{background:var(--yellow);}
+h2.sec-h{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,42px);line-height:1.12;letter-spacing:-.5px;max-width:16ch;}
+.sec-h.inv{color:#fff;}
+.sec-sub{font-size:16px;color:var(--text-mid);line-height:1.75;max-width:560px;margin-top:16px;}
+.sec-sub.inv{color:var(--text-inv);}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-bottom:40px;}
+section{padding:clamp(56px,7.5vw,96px) 0;}
+.sec-dark{background:var(--ink);}
+.sec-alt{background:var(--paper-alt);}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:14px 26px;border-radius:28px;cursor:pointer;border:1px solid transparent;transition:transform .2s,filter .2s,background .2s;}
+.btn-primary{background:var(--yellow);color:var(--ink);}
+.btn-primary:hover{filter:brightness(1.07);transform:translateY(-1px);}
+.btn-outline{border-color:var(--line);color:var(--text-dark);}
+.btn-outline:hover{border-color:var(--yellow-deep);background:var(--yellow-pale);}
+.btn-outline.on-dark{border-color:rgba(255,255,255,.3);color:#fff;}
+.btn-outline.on-dark:hover{border-color:var(--yellow);background:rgba(255,199,44,.08);}
+
+/* ===== HERO ===== */
+.hero{background:var(--paper);padding:clamp(120px,14vw,150px) 0 clamp(56px,7vw,80px);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-120px;right:-140px;width:420px;height:420px;background:radial-gradient(circle,rgba(255,199,44,.35),transparent 70%);z-index:0;}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,60px);align-items:center;position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:30px;padding:6px 16px 6px 10px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-mid);margin-bottom:24px;}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5vw,54px);line-height:1.06;letter-spacing:-1.2px;color:var(--text-dark);}
+h1 em{font-style:normal;background:linear-gradient(180deg,transparent 62%,var(--yellow) 62%);}
+.hero-lede{font-size:17px;color:var(--text-mid);line-height:1.8;margin:26px 0 32px;max-width:520px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:30px;}
+.hero-proof{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--text-muted);}
+.hero-proof b{color:var(--text-dark);font-size:15px;font-family:var(--display);}
+
+/* RECEIPT CARD */
+.ticket{background:#fff;border-radius:4px 4px 0 0;box-shadow:0 30px 60px -24px rgba(21,24,27,.35);position:relative;transform:rotate(1.6deg);transition:transform .35s var(--ease);}
+.ticket:hover{transform:rotate(0deg) translateY(-4px);}
+.ticket-zig{height:14px;background:
+  linear-gradient(135deg, var(--paper) 25%, transparent 25%) 0 50%,
+  linear-gradient(225deg, var(--paper) 25%, transparent 25%) 0 50%;
+  background-size:16px 16px;background-repeat:repeat-x;}
+.ticket-head{padding:20px 22px 14px;border-bottom:1px dashed var(--line);}
+.ticket-head .tt{font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);}
+.ticket-head .tn{font-family:var(--display);font-weight:700;font-size:16px;margin-top:4px;}
+.ticket-row{display:flex;justify-content:space-between;align-items:center;padding:11px 22px;border-bottom:1px dashed var(--line);font-size:12.5px;}
+.ticket-row .lbl{color:var(--text-mid);}
+.ticket-row .val{font-family:var(--mono);font-weight:600;}
+.val.ok{color:var(--green);}
+.val.gap{color:var(--red);}
+.ticket-score{margin:14px 18px;padding:18px 20px;border-radius:12px;background:var(--ink);display:flex;justify-content:space-between;align-items:center;}
+.ticket-score .num{font-family:var(--display);font-size:34px;font-weight:700;color:var(--yellow);line-height:1;}
+.ticket-score .info{text-align:right;}
+.ticket-score .info .l1{color:#fff;font-size:12px;font-weight:600;}
+.ticket-score .info .l2{color:rgba(255,255,255,.5);font-size:10px;font-family:var(--mono);margin-top:3px;}
+.ticket-foot{padding:14px 22px 22px;font-family:var(--mono);font-size:10px;color:var(--text-muted);text-align:center;letter-spacing:.5px;}
+
+/* ===== STATS DARK BAND ===== */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px;}
+.stat-card{padding:26px 22px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);transition:transform .25s var(--ease),background .25s;}
+.stat-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.08);}
+.stat-num{font-family:var(--display);font-size:clamp(26px,3vw,36px);font-weight:700;color:var(--yellow);margin-bottom:8px;}
+.stat-lbl{font-size:12.5px;color:var(--text-inv);line-height:1.6;}
+
+/* ===== PROBLEM ===== */
+.doc-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:44px 0 8px;}
+.doc-chip{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--text-mid);display:flex;align-items:center;gap:8px;box-shadow:0 8px 18px -14px rgba(21,24,27,.3);}
+.doc-chip i{color:var(--yellow-deep);}
+.doc-arrow{color:var(--text-muted);font-size:14px;}
+.problem-split{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:20px;}
+.problem-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;}
+.problem-card.no{border-top:4px solid var(--red);}
+.problem-card.yes{border-top:4px solid var(--green);}
+.problem-card h4{font-family:var(--display);font-size:16px;margin-bottom:12px;}
+.problem-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.problem-card li{font-size:13.5px;color:var(--text-mid);display:flex;gap:9px;align-items:flex-start;line-height:1.5;}
+.problem-card li i{margin-top:3px;font-size:11px;flex-shrink:0;}
+.problem-card.no li i{color:var(--red);}
+.problem-card.yes li i{color:var(--green);}
+
+/* ===== FLOW (worked example) ===== */
+.how-imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px;}
+.how-img{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 10px 24px -18px rgba(21,24,27,.3);}
+.how-img img{width:100%;height:170px;object-fit:cover;}
+.how-img figcaption{padding:12px 14px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--text-mid);}
+.flow-wrap{display:flex;align-items:stretch;gap:0;margin-top:36px;overflow-x:auto;padding-bottom:8px;}
+.flow-step{min-width:190px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-right:26px;position:relative;flex-shrink:0;}
+.flow-step:not(:last-child)::after{content:'\f061';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;right:-22px;top:50%;transform:translateY(-50%);color:var(--yellow-deep);font-size:14px;}
+.flow-step .fn{font-family:var(--mono);font-size:9.5px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.flow-step h5{font-family:var(--display);font-size:14px;margin-bottom:6px;}
+.flow-step p{font-size:12px;color:var(--text-mid);line-height:1.55;}
+.flow-step.flag{background:var(--ink);border-color:var(--ink);}
+.flow-step.flag .fn{color:var(--yellow);}
+.flow-step.flag h5,.flow-step.flag p{color:#fff;}
+
+/* ===== LAYERS ===== */
+.layer-list{display:flex;flex-direction:column;gap:12px;margin-top:36px;}
+.layer-item{display:grid;grid-template-columns:70px 1fr 280px;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;}
+.layer-item.core{border:2px solid var(--yellow-deep);background:var(--yellow-pale);}
+.layer-n{font-family:var(--display);font-size:22px;font-weight:700;color:var(--yellow-deep);}
+.layer-t h5{font-family:var(--display);font-size:15.5px;margin-bottom:4px;}
+.layer-t p{font-size:12.5px;color:var(--text-mid);line-height:1.55;}
+.layer-tech{font-family:var(--mono);font-size:10px;color:var(--text-muted);text-align:right;line-height:1.6;}
+
+/* ===== INNOVATIONS ===== */
+.innov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;}
+.innov-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 10px 26px -20px rgba(21,24,27,.25);transition:transform .25s var(--ease);}
+.innov-card:hover{transform:translateY(-4px);}
+.innov-tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--yellow-deep);background:var(--yellow-pale);padding:4px 10px;border-radius:20px;margin-bottom:14px;}
+.innov-card h4{font-family:var(--display);font-size:17px;margin-bottom:8px;line-height:1.3;}
+.innov-card p{font-size:13px;color:var(--text-mid);line-height:1.7;}
+
+/* ===== COMPARISON TABLE ===== */
+.comp-wrap{overflow-x:auto;margin-top:32px;border-radius:16px;border:1px solid var(--line);background:#fff;}
+.comp-table{width:100%;border-collapse:collapse;min-width:760px;}
+.comp-table th{background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:14px 16px;text-align:left;font-weight:600;}
+.comp-table th.hi{background:var(--yellow-deep);color:var(--ink);}
+.comp-table td{padding:13px 16px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--line);}
+.comp-table td.hi{background:var(--yellow-pale);font-weight:700;color:var(--text-dark);}
+.comp-table td.yes{color:var(--green);font-weight:800;text-align:center;}
+.comp-table td.no{color:var(--text-muted);text-align:center;}
+.comp-table tr:last-child td{border-bottom:none;}
+
+/* ===== PRICING ===== */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px;}
+.price-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 26px;display:flex;flex-direction:column;position:relative;}
+.price-card.hl{border:2px solid var(--yellow-deep);background:var(--ink);}
+.price-card.hl *{color:#fff;}
+.price-card.hl .price-tier{color:var(--yellow);}
+.price-flag{position:absolute;top:-12px;right:22px;background:var(--yellow);color:var(--ink);font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:14px;}
+.price-tier{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+.price-amt{font-family:var(--display);font-size:38px;font-weight:700;}
+.price-amt span{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text-muted);}
+.price-card.hl .price-amt span{color:rgba(255,255,255,.5);}
+.price-desc{font-size:13px;color:var(--text-mid);margin:12px 0 20px;line-height:1.6;}
+.price-card.hl .price-desc{color:rgba(255,255,255,.7);}
+.price-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px;flex:1;}
+.price-list li{font-size:12.5px;display:flex;gap:9px;align-items:flex-start;color:var(--text-mid);line-height:1.5;}
+.price-card.hl .price-list li{color:rgba(255,255,255,.78);}
+.price-list li i{color:var(--yellow-deep);margin-top:3px;font-size:10px;}
+.price-card.hl .price-list li i{color:var(--yellow);}
+
+/* ===== ROADMAP ===== */
+.road-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px;}
+.road-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;border-top:4px solid var(--yellow-deep);}
+.road-card .yr{font-family:var(--mono);font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow-deep);margin-bottom:6px;}
+.road-card h4{font-family:var(--display);font-size:18px;margin-bottom:14px;}
+.road-card ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.road-card li{font-size:12.5px;color:var(--text-mid);display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding-bottom:9px;}
+.road-card li:last-child{border-bottom:none;padding-bottom:0;}
+.road-card li b{font-family:var(--mono);color:var(--text-dark);}
+
+/* ===== TEAM ===== */
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px;}
+.team-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;}
+.team-avatar{width:52px;height:52px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;color:var(--yellow);font-size:18px;margin-bottom:16px;}
+.team-card h4{font-family:var(--display);font-size:17px;margin-bottom:3px;}
+.team-role{font-family:var(--mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--yellow-deep);margin-bottom:14px;}
+.team-card p{font-size:13px;color:var(--text-mid);line-height:1.7;}
+
+/* ===== CTA / FOOTER ===== */
+.cta{background:var(--yellow);text-align:center;padding:clamp(56px,7vw,84px) 0;}
+.cta h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.6vw,42px);color:var(--ink);max-width:20ch;margin:0 auto 16px;letter-spacing:-.5px;}
+.cta p{font-size:15px;color:rgba(21,24,27,.75);max-width:520px;margin:0 auto 30px;}
+.cta .btn-primary{background:var(--ink);color:var(--yellow);}
+.cta .btn-outline{border-color:rgba(21,24,27,.35);color:var(--ink);}
+footer{background:var(--ink);padding:52px 0 26px;}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.09);}
+.foot-brand p{font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.7;margin-top:14px;max-width:260px;}
+.foot-col h6{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px;}
+.foot-col a{display:block;font-size:13px;color:rgba(255,255,255,.68);margin-bottom:10px;}
+.foot-col a:hover{color:var(--yellow);}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:22px;flex-wrap:wrap;gap:10px;}
+.foot-bottom span{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.4);}
+
+/* ===== RESPONSIVE ===== */
+/* Large desktop: let content breathe a little more */
+@media(min-width:1400px){
+  :root{--max-w:1280px;}
+  h1{font-size:clamp(44px,4.6vw,60px);}
+}
+
+/* Small laptop / narrow desktop */
+@media(max-width:1180px){
+  .container{padding:0 clamp(18px,3.6vw,44px);}
+  .nav-links{gap:18px;}
+  .nav-links a{font-size:10.3px;}
+}
+
+/* Tablet landscape ↔ small laptop: nav switches to hamburger here */
+@media(max-width:1024px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero-grid{grid-template-columns:1fr;gap:44px;}
+  .hero-lede{max-width:100%;}
+  .ticket{max-width:440px;margin:0 auto;}
+  .innov-grid{grid-template-columns:repeat(2,1fr);}
+  .price-grid{grid-template-columns:1fr 1fr;}
+  .price-grid .price-card:last-child{grid-column:1 / -1;max-width:100%;}
+  .road-wrap{grid-template-columns:1fr;}
+}
+
+/* 900px tier: tablets / small laptops in split-screen */
+@media(max-width:900px){
+  section{padding:clamp(48px,9vw,72px) 0;}
+  .sec-head{gap:20px;}
+  h1{font-size:clamp(30px,6vw,42px);}
+  .sec-h{font-size:clamp(24px,4.4vw,32px);max-width:100%;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .problem-split{grid-template-columns:1fr;gap:18px;}
+  .layer-item{grid-template-columns:1fr;text-align:left;gap:10px;padding:20px;}
+  .layer-tech{text-align:left;}
+  .layer-n{font-size:18px;}
+  .comp-table{min-width:640px;}
+  .price-grid{grid-template-columns:1fr;}
+  .price-grid .price-card:last-child{grid-column:auto;}
+  .team-grid{grid-template-columns:1fr;}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:26px;}
+  .flow-step{min-width:170px;margin-right:22px;}
+  .how-imgs{grid-template-columns:repeat(2,1fr);gap:14px;}
+  .how-img img{height:150px;}
+  .how-img:last-child{grid-column:1 / -1;}
+  .how-img:last-child img{height:180px;}
+}
+
+/* Mobile phones */
+@media(max-width:680px){
+  .hero{padding:clamp(96px,26vw,120px) 0 48px;}
+  .hero-badge{font-size:9.5px;padding:6px 12px 6px 8px;}
+  .hero-btns{flex-direction:column;align-items:stretch;}
+  .hero-btns .btn{justify-content:center;}
+  .hero-proof{gap:18px;flex-direction:column;}
+  .ticket{transform:none;max-width:100%;}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:12px;}
+  .stat-card{padding:20px 16px;}
+  .doc-row{gap:8px;}
+  .doc-chip{padding:11px 14px;font-size:10.5px;}
+  .innov-grid{grid-template-columns:1fr;}
+  .comp-wrap{border-radius:12px;}
+  .foot-grid{grid-template-columns:1fr;gap:28px;}
+  .foot-bottom{flex-direction:column;align-items:flex-start;}
+  .cta .hero-btns{flex-direction:column;}
+  .how-imgs{grid-template-columns:1fr;gap:14px;}
+  .how-img:last-child{grid-column:auto;}
+  .how-img img{height:190px;}
+}
+
+/* Very small phones */
+@media(max-width:420px){
+  .stats-grid{grid-template-columns:1fr;}
+  .nav-word{font-size:15px;}
+  .nav-word span{display:none;}
+  h1{font-size:28px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-logo">
+    <div class="nav-mark"><i class="fa-solid fa-shield-halved"></i></div>
+    <div class="nav-word">ComplyChef<span>AI · Food Compliance Intelligence</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#innovations">Innovation</a></li>
+    <li><a href="#compare">Compare</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Start free trial</a>
+  <button class="hamburger" onclick="document.getElementById('mnav').classList.toggle('open')"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mnav">
+  <a href="#problem">Problem</a>
+  <a href="#solution">Solution</a>
+  <a href="#innovations">Innovation</a>
+  <a href="#compare">Compare</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="#team">Team</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-badge"><span class="dot"></span> Pilot-validated with 52 UK food businesses</div>
+      <h1>Detecting compliance risk that lives <em>between</em> documents.</h1>
+      <p class="hero-lede">Invoices, allergen files, staff rotas, training certificates and temperature logs all exist. They just don't talk to each other. ComplyChef AI reads them, connects them, and flags the gap before it becomes an inspection failure, an allergen incident, or a lost hygiene rating.</p>
+      <div class="hero-btns">
+        <a href="#pricing" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> Start 30-day free trial</a>
+        <a href="#solution" class="btn btn-outline"><i class="fa-solid fa-play"></i> See how it works</a>
+      </div>
+      <div class="hero-proof">
+        <div><b>176,685</b> UK food businesses addressable</div>
+        <div><b>86%</b> pilot rated it relevant</div>
+        <div><b>£69</b>/site/month, no setup fee</div>
+      </div>
+    </div>
+    <div class="ticket">
+      <div class="ticket-head">
+        <div class="tt">Live Inspection Readiness</div>
+        <div class="tn">Fuji Kitchen · Site 004</div>
+      </div>
+      <div class="ticket-row"><span class="lbl">Temperature logs (7d)</span><span class="val gap">2 missing</span></div>
+      <div class="ticket-row"><span class="lbl">Allergen register</span><span class="val gap">1 gap flagged</span></div>
+      <div class="ticket-row"><span class="lbl">Supplier certificates</span><span class="val gap">1 expired</span></div>
+      <div class="ticket-row"><span class="lbl">Rota-to-training match</span><span class="val ok">All shifts cleared</span></div>
+      <div class="ticket-score">
+        <div class="num">84</div>
+        <div class="info"><div class="l1">Readiness Score / 100</div><div class="l2">3 corrective actions to +100</div></div>
+      </div>
+      <div class="ticket-foot">★ INSPECTION PACK READY IN &lt; 3 MINUTES ★</div>
+      <div class="ticket-zig"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="sec-dark">
+  <div class="container">
+    <div class="eyebrow on-dark">The evidence</div>
+    <h2 class="sec-h inv">Paper compliance is the default, and it's failing quietly.</h2>
+    <p class="sec-sub inv">Findings from ComplyChef AI's own pilot study of 52 UK food businesses, January to February 2026, and independent market data.</p>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">78%</div><div class="stat-lbl">of businesses still run compliance mainly on paper diaries and folders</div></div>
+      <div class="stat-card"><div class="stat-num">74%</div><div class="stat-lbl">find preparing for an EHO inspection stressful or very stressful</div></div>
+      <div class="stat-card"><div class="stat-num">61%</div><div class="stat-lbl">report active concerns with allergen management accuracy</div></div>
+      <div class="stat-card"><div class="stat-num">£104.4bn</div><div class="stat-lbl">size of the UK food and drink industry, the country's largest manufacturing sector</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="eyebrow">The problem</div>
+    <h2 class="sec-h">The records exist. They just don't communicate.</h2>
+    <p class="sec-sub">A new ingredient lands on a supplier invoice. Nobody checks it against the allergen register. A new hire is added to Saturday's rota. Nobody checks if they're trained. Each document is fine in isolation. The risk lives in the gap between them.</p>
+
+    <div class="doc-row">
+      <div class="doc-chip"><i class="fa-solid fa-file-invoice"></i> Supplier invoice</div>
+      <span class="doc-arrow">＋</span>
+      <div class="doc-chip"><i class="fa-solid fa-triangle-exclamation"></i> Allergen sheet</div>
+      <span class="doc-arrow">＋</span>
+      <div class="doc-chip"><i class="fa-solid fa-users"></i> Staff rota</div>
+      <span class="doc-arrow">＋</span>
+      <div class="doc-chip"><i class="fa-solid fa-certificate"></i> Training record</div>
+      <span class="doc-arrow">＋</span>
+      <div class="doc-chip"><i class="fa-solid fa-temperature-half"></i> Temperature log</div>
+      <span class="doc-arrow">=</span>
+      <div class="doc-chip" style="background:var(--ink);color:#fff;border-color:var(--ink);"><i class="fa-solid fa-diagram-project" style="color:var(--yellow)"></i> No shared picture</div>
+    </div>
+
+    <div class="problem-split">
+      <div class="problem-card no">
+        <h4>Without ComplyChef AI</h4>
+        <ul>
+          <li><i class="fa-solid fa-xmark"></i> A new sauce arrives with sesame; nobody cross-checks the allergen file before it's served</li>
+          <li><i class="fa-solid fa-xmark"></i> A new hire is rota'd onto a shift before their allergen training is confirmed</li>
+          <li><i class="fa-solid fa-xmark"></i> An EHO visit means digging through folders, spreadsheets and WhatsApp threads</li>
+          <li><i class="fa-solid fa-xmark"></i> 63% of businesses spend 6+ hours a week just on compliance admin</li>
+        </ul>
+      </div>
+      <div class="problem-card yes">
+        <h4>With ComplyChef AI</h4>
+        <ul>
+          <li><i class="fa-solid fa-check"></i> Every invoice is read on arrival and checked against the allergen register automatically</li>
+          <li><i class="fa-solid fa-check"></i> Every rota entry is matched to certification status before the shift starts</li>
+          <li><i class="fa-solid fa-check"></i> A dated, linked, inspection-ready evidence pack is compiled continuously</li>
+          <li><i class="fa-solid fa-check"></i> A single Live Inspection Readiness Score shows exactly what's missing, and why</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow">How it works</div>
+    <h2 class="sec-h">One new ingredient, traced through the whole kitchen.</h2>
+    <p class="sec-sub">The Compliance Risk Graph is the engine underneath every feature: instead of storing documents in folders, it stores them as connected nodes linked to the food-safety obligation they belong to.</p>
+
+    <div class="how-imgs">
+      <figure class="how-img">
+        <img src="https://images.pexels.com/photos/7363069/pexels-photo-7363069.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Supplier delivery arriving at a food business" loading="lazy">
+        <figcaption>1. Delivery arrives</figcaption>
+      </figure>
+      <figure class="how-img">
+        <img src="https://images.unsplash.com/photo-1760169799369-2b8574466735?fm=jpg&q=70&w=800&auto=format&fit=crop" alt="Chefs preparing food in a busy commercial kitchen" loading="lazy">
+        <figcaption>2. Kitchen keeps moving</figcaption>
+      </figure>
+      <figure class="how-img">
+        <img src="https://images.pexels.com/photos/12935057/pexels-photo-12935057.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Chef reviewing a compliance alert on a tablet in the kitchen" loading="lazy">
+        <figcaption>3. Manager reviews the alert</figcaption>
+      </figure>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-step"><div class="fn">Step 1</div><h5>Invoice arrives</h5><p>New "chocolate sauce" detected on a supplier delivery note via OCR.</p></div>
+      <div class="flow-step"><div class="fn">Step 2</div><h5>Allergen register checked</h5><p>Graph traversal looks for a matching allergen register entry.</p></div>
+      <div class="flow-step"><div class="fn">Step 3</div><h5>Menu &amp; label checked</h5><p>Menu item and customer-facing allergen declaration are checked too.</p></div>
+      <div class="flow-step flag"><div class="fn">Step 4</div><h5>Compliance gap</h5><p>No register entry found, so the gap is flagged before the ingredient reaches the plate.</p></div>
+      <div class="flow-step"><div class="fn">Step 5</div><h5>Manager alerted</h5><p>Single consolidated corrective task sent, before customer exposure.</p></div>
+      <div class="flow-step"><div class="fn">Step 6</div><h5>Score updates</h5><p>Live Inspection Readiness Score adjusts in real time until it's resolved.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section>
+  <div class="container">
+    <div class="eyebrow">System architecture</div>
+    <h2 class="sec-h">Six layers, one connected compliance network.</h2>
+    <p class="sec-sub">Document intelligence, graph-based data modelling and rules-based compliance logic, working together. No machine learning is required to make the MVP work, that part comes later, trained on real operational data.</p>
+
+    <div class="layer-list">
+      <div class="layer-item"><div class="layer-n">01</div><div class="layer-t"><h5>Data Capture</h5><p>Mobile daily checks, document uploads, rota entries and corrective-action photos.</p></div><div class="layer-tech">REST API · React Native · React.js</div></div>
+      <div class="layer-item"><div class="layer-n">02</div><div class="layer-t"><h5>Document Intelligence</h5><p>OCR + NLP extract structured data from invoices, certificates and allergen sheets.</p></div><div class="layer-tech">Google Document AI / AWS Textract · spaCy</div></div>
+      <div class="layer-item"><div class="layer-n">03</div><div class="layer-t"><h5>Operational Knowledge Base</h5><p>Master records for staff, suppliers, ingredients, allergens, recipes and equipment.</p></div><div class="layer-tech">PostgreSQL</div></div>
+      <div class="layer-item core"><div class="layer-n">04</div><div class="layer-t"><h5>Compliance Risk Graph, core innovation</h5><p>Records become connected nodes linked to risks, evidence and corrective actions.</p></div><div class="layer-tech">Neo4j / Apache AGE · custom graph traversal</div></div>
+      <div class="layer-item"><div class="layer-n">05</div><div class="layer-t"><h5>Scoring &amp; Alert Engine</h5><p>Live Inspection Readiness Score, pre-shift alerts, allergen-gap and consistency alerts.</p></div><div class="layer-tech">Python rules engine · scikit-learn / TensorFlow post-MVP · FastAPI</div></div>
+      <div class="layer-item"><div class="layer-n">06</div><div class="layer-t"><h5>Reporting &amp; Workflow</h5><p>Dashboards, corrective-action lists, inspection-ready evidence packs, consultant views.</p></div><div class="layer-tech">React.js · Puppeteer / WeasyPrint · RBAC</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INNOVATIONS -->
+<section id="innovations" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow">Core innovation</div>
+    <h2 class="sec-h">Five proprietary elements no competitor combines.</h2>
+    <p class="sec-sub">A novelty search across patent databases found no single patent, or combination of patents, revealing this architecture.</p>
+    <div class="innov-grid">
+      <div class="innov-card"><span class="innov-tag">Innovation A</span><h4>Compliance Risk Graph</h4><p>Connects every operational record to the specific food-safety obligation it belongs to, rather than storing it as an isolated file.</p></div>
+      <div class="innov-card"><span class="innov-tag">Innovation B</span><h4>Invoice-to-Allergen Gap Detection</h4><p>Reads supplier invoices and delivery notes and checks new or changed ingredients against the allergen register before they reach the kitchen.</p></div>
+      <div class="innov-card"><span class="innov-tag">Innovation C</span><h4>Rota-to-Training Risk Matching</h4><p>Validates every shift assignment against the staff member's current training and certification status before the shift begins.</p></div>
+      <div class="innov-card"><span class="innov-tag">Innovation D</span><h4>Live Inspection Readiness Score</h4><p>A continually refreshed 0 to 100 compliance health score based on real operational evidence, not just ticked boxes.</p></div>
+      <div class="innov-card"><span class="innov-tag">Innovation E</span><h4>Cross-Document Ingredient Intelligence</h4><p>Reconciles invoices, recipes, menus and allergen files simultaneously to surface three-way mismatches automatically.</p></div>
+      <div class="innov-card"><span class="innov-tag">Innovation F</span><h4>Unified Evidence Repository</h4><p>A single ordered, traceable evidence store, so an EHO request for 30 days of records takes minutes, not a folder search.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="compare">
+  <div class="container">
+    <div class="eyebrow">Competitive landscape</div>
+    <h2 class="sec-h">Checklist tools tick boxes. ComplyChef AI reads between them.</h2>
+    <p class="sec-sub">Trail, FoodDocs, Navitas Safety, Safefood 360° and GoAudits all digitise part of the picture. None reconcile documents against each other.</p>
+    <div class="comp-wrap">
+      <table class="comp-table">
+        <tr><th class="hi">ComplyChef AI</th><th>Trail</th><th>FoodDocs</th><th>Navitas Safety</th><th>Safefood 360°</th><th>GoAudits</th></tr>
+        <tr><td class="hi">Entry price · £69/mo</td><td>£69/mo</td><td>£59/mo</td><td>£129/mo</td><td>~£1,000/mo</td><td>£10 to £15/user</td></tr>
+        <tr><td class="hi" style="text-align:center">Invoice-to-Allergen Detection</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td></tr>
+        <tr><td class="hi" style="text-align:center">Rota-to-Training Matching</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td></tr>
+        <tr><td class="hi" style="text-align:center">Compliance Risk Graph</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td></tr>
+        <tr><td class="hi" style="text-align:center">Cross-document intelligence</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td></tr>
+        <tr><td class="hi" style="text-align:center">Document OCR + NLP</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td><td class="no">No</td></tr>
+        <tr><td class="hi" style="text-align:center">SME-accessible pricing</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">No</td><td class="no">No</td><td class="yes">✓</td></tr>
+        <tr><td class="hi" style="text-align:center">No hardware required</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">No</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- PILOT -->
+<section class="sec-dark">
+  <div class="container">
+    <div class="eyebrow on-dark">Pilot survey · 52 UK food businesses</div>
+    <h2 class="sec-h inv">Validated before a single line of code was built.</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">86%</div><div class="stat-lbl">rated ComplyChef AI "very" or "extremely" relevant to their operations</div></div>
+      <div class="stat-card"><div class="stat-num">88%</div><div class="stat-lbl">said they were interested in automated compliance alerts</div></div>
+      <div class="stat-card"><div class="stat-num">71%</div><div class="stat-lbl">were willing to take part in future beta testing</div></div>
+      <div class="stat-card"><div class="stat-num">46%</div><div class="stat-lbl">indicated willingness to give a formal letter of interest</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow">Pricing</div>
+    <h2 class="sec-h">Enterprise compliance intelligence, café pricing.</h2>
+    <p class="sec-sub">No setup fee. No long contract. 30 days free, no card required.</p>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-tier">Core</div>
+        <div class="price-amt">£69<span>/site/month</span></div>
+        <p class="price-desc">For independent restaurants, cafés, bakeries and takeaways, the primary segment.</p>
+        <ul class="price-list">
+          <li><i class="fa-solid fa-check"></i> Mobile daily checks &amp; document upload</li>
+          <li><i class="fa-solid fa-check"></i> Invoice-to-allergen gap detection</li>
+          <li><i class="fa-solid fa-check"></i> Rota-to-training pre-shift alerts</li>
+          <li><i class="fa-solid fa-check"></i> Live Inspection Readiness dashboard</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Start free trial</a>
+      </div>
+      <div class="price-card hl">
+        <div class="price-flag">Most sites</div>
+        <div class="price-tier">Multi-site</div>
+        <div class="price-amt">£59<span>/site/month</span></div>
+        <p class="price-desc">For small groups and franchise operators running 3+ sites from one dashboard.</p>
+        <ul class="price-list">
+          <li><i class="fa-solid fa-check"></i> Everything in Core, per site</li>
+          <li><i class="fa-solid fa-check"></i> Group-level benchmarking dashboard</li>
+          <li><i class="fa-solid fa-check"></i> Priority-site risk flagging</li>
+          <li><i class="fa-solid fa-check"></i> Volume pricing across all sites</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Start free trial</a>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Consultant</div>
+        <div class="price-amt">£299<span>/month</span></div>
+        <p class="price-desc">For food safety consultants managing many client sites from one place.</p>
+        <ul class="price-list">
+          <li><i class="fa-solid fa-check"></i> Multi-client compliance dashboard</li>
+          <li><i class="fa-solid fa-check"></i> Real-time visibility across all clients</li>
+          <li><i class="fa-solid fa-check"></i> Channel commission on client sites</li>
+          <li><i class="fa-solid fa-check"></i> Expired-certificate &amp; gap alerts</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Talk to us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="container">
+    <div class="eyebrow">Roadmap</div>
+    <h2 class="sec-h">From 78 sites in London to 609 sites across three countries.</h2>
+    <div class="road-wrap">
+      <div class="road-card">
+        <div class="yr">Year 1 · Soft launch</div>
+        <h4>MVP build &amp; break-even</h4>
+        <ul>
+          <li>Paying subscribers <b>78</b></li>
+          <li>MVP live <b>Month 6</b></li>
+          <li>Team <b>2 founders + 1 to 2 contractors</b></li>
+          <li>ARR <b>≈£28,000</b></li>
+        </ul>
+      </div>
+      <div class="road-card">
+        <div class="yr">Year 2 · Commercial launch</div>
+        <h4>Consultant channel scales</h4>
+        <ul>
+          <li>Paying subscribers <b>351</b></li>
+          <li>Consultant partners <b>5 to 10</b></li>
+          <li>Team <b>4 to 5 permanent staff</b></li>
+          <li>ARR <b>≈£291,000</b></li>
+        </ul>
+      </div>
+      <div class="road-card">
+        <div class="yr">Year 3 · International</div>
+        <h4>Ireland &amp; Australia live</h4>
+        <ul>
+          <li>Paying subscribers <b>609</b></li>
+          <li>Markets live <b>Ireland + Australia/Canada</b></li>
+          <li>Team <b>8 to 10 permanent staff</b></li>
+          <li>ARR <b>≈£646,000</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="sec-alt">
+  <div class="container">
+    <div class="eyebrow">The founders</div>
+    <h2 class="sec-h">Built by the person who lived the problem.</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">MB</div>
+        <h4>Matthew Raj Abhilash Billa</h4>
+        <div class="team-role">Founder · Product &amp; Compliance Director</div>
+        <p>Restaurant Manager at Fuji Japanese Restaurant, London, personally responsible for supplier procurement, allergen documentation, staff training and hygiene compliance. First Class MBA (International Business Management), University of Greenwich. The compliance logic behind ComplyChef AI comes directly from operational failures he managed firsthand.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">JK</div>
+        <h4>Jatothu Kalyan</h4>
+        <div class="team-role">Co-Founder · Operations &amp; Compliance Research</div>
+        <p>Leads operations, research coordination and future South Asia market development. B.Tech in Civil Engineering underpins a structured, phased approach to compliance workflow design. Currently completing Food Safety Level 2, HACCP Awareness and Google Project Management certifications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <h2>No small food business should lose its hygiene rating over a gap in the paperwork.</h2>
+    <p>Join the pilot waitlist or start your 30-day free trial. No credit card, no setup fee, cancel anytime.</p>
+    <div class="hero-btns" style="justify-content:center;">
+      <a href="#" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> Start free trial</a>
+      <a href="#" class="btn btn-outline"><i class="fa-solid fa-calendar"></i> Book a demo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="nav-logo"><div class="nav-mark"><i class="fa-solid fa-shield-halved"></i></div><div class="nav-word">ComplyChef<span>AI · Food Compliance Intelligence</span></div></div>
+        <p>Compliance intelligence for UK food businesses. Not a checklist app. A system that detects the risk living between your documents.</p>
+      </div>
+      <div class="foot-col">
+        <h6>Product</h6>
+        <a href="#solution">How it works</a>
+        <a href="#innovations">Innovation</a>
+        <a href="#compare">Compare</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="foot-col">
+        <h6>Company</h6>
+        <a href="#team">Founders</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h6>Legal</h6>
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms of service</a>
+        <a href="#">Regulatory notice</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 ComplyChef AI Ltd. All rights reserved.</span>
+      <span>London, United Kingdom</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.mobile-nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mnav').classList.remove('open')));
+</script>
+</body>
+</html>
