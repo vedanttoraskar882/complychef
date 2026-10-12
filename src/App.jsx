@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Evidence } from './components/Evidence';
@@ -13,8 +13,11 @@ import { Roadmap } from './components/Roadmap';
 import { Founders } from './components/Founders';
 import { FinalCta } from './components/FinalCta';
 import { Footer } from './components/Footer';
+import { PilotModal } from './components/PilotModal';
 
 export function App() {
+  const [isPilotModalOpen, setIsPilotModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-brand-ivory text-brand-charcoal antialiased flex flex-col selection:bg-brand-yellow selection:text-brand-charcoal">
       {/* 1. Navigation */}
@@ -22,7 +25,7 @@ export function App() {
 
       <main className="flex-grow">
         {/* 2. Hero & Live Inspection Readiness preview */}
-        <Hero />
+        <Hero onOpenPilotModal={() => setIsPilotModalOpen(true)} />
 
         {/* 3. Evidence statistics */}
         <Evidence />
@@ -60,6 +63,12 @@ export function App() {
 
       {/* 14. Footer */}
       <Footer />
+
+      {/* Request a Pilot Form Modal */}
+      <PilotModal
+        isOpen={isPilotModalOpen}
+        onClose={() => setIsPilotModalOpen(false)}
+      />
     </div>
   );
 }

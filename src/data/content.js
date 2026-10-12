@@ -27,7 +27,7 @@ export const siteContent = {
     headlinePart2: " documents.",
     lede: "Invoices, allergen files, staff rotas, training certificates and temperature logs all exist. They just don't talk to each other. ComplyChef AI reads them, connects them, and flags the gap before it becomes an inspection failure, an allergen incident, or a lost hygiene rating.",
     buttons: [
-      { label: "Start 30-day free trial", href: "#pricing", primary: true },
+      { label: "Request a pilot form", href: "#", primary: true, isPilotForm: true },
       { label: "See how it works", href: "#solution", primary: false }
     ],
     proofPoints: [

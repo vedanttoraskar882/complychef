@@ -3,7 +3,7 @@ import { ArrowRight, Play, CheckCircle2, AlertCircle, FileText, ShieldAlert, Spa
 import { siteContent } from '../data/content';
 import { DocumentNetworkBackground } from './DocumentNetworkBackground';
 
-export const Hero = () => {
+export const Hero = ({ onOpenPilotModal }) => {
   const { badge, headlinePart1, headlineEmphasis, headlinePart2, lede, buttons, proofPoints, preview } =
     siteContent.hero;
 
@@ -53,13 +53,14 @@ export const Hero = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 mb-12">
-              <a
-                href={buttons[0].href}
+              <button
+                type="button"
+                onClick={onOpenPilotModal}
                 className="inline-flex items-center justify-center gap-2.5 bg-brand-yellow hover:bg-brand-yellow-deep text-brand-charcoal font-mono text-xs sm:text-sm font-bold tracking-wider uppercase px-7 py-4 rounded-full shadow-lg shadow-brand-yellow/20 hover:shadow-brand-yellow/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2"
               >
-                <span>{buttons[0].label}</span>
+                <span>REQUEST A PILOT FORM</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-              </a>
+              </button>
               <a
                 href={buttons[1].href}
                 className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-brand-yellow-pale text-brand-charcoal border border-brand-charcoal/15 font-mono text-xs sm:text-sm font-semibold tracking-wider uppercase px-7 py-4 rounded-full shadow-soft-sm hover:border-brand-yellow-deep hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
